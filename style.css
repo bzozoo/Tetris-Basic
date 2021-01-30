@@ -1,14 +1,65 @@
-.container {
-  display: flex;
+body {
+  margin: 0;
+  background-color: lightgray;
+  height: 100%;
+  width: 400px;
+  overflow: hidden;
 }
 
+#score {
+  font-size: 30px;
+  color: red;
+  text-align: center;
+  margin-top: 2px;
+  margin-bottom: 2px;
+}
+
+.actions {
+  margin-top: 10px;
+  padding-top: 10px;
+  text-align: center;
+}
+
+.controlls {
+  margin-left: 40px;
+  padding-top: 10px;
+}
+
+.gombBtn {
+  background-color: yellow;
+  padding: 10px;
+  border-radius: 50%;
+  box-shadow: 5px 5px 10px 5px grey;
+  margin-right: 10px;
+  border-width: 10px;
+}
+
+.actionBtn {
+  background-color: yellow;
+  padding: 5px;
+  border-radius: 10%;
+  box-shadow: 5px 5px 10px 5px grey;
+}
+
+.hidden {
+  display: none;
+}
+
+.container {
+  margin: 5px;
+  display: flex;
+  width: 310px;
+}
 
 .grid {
+  border: 2px black solid;
+  min-width: 200px;
   width: 200px;
-  height: 400px;
+  height: 420px;
   display: flex;
   flex-wrap: wrap;
-  background-color: yellow;
+  background-color: #d0f5a9;
+  box-shadow: 5px 5px 10px 5px grey;
 }
 
 .grid div {
@@ -20,17 +71,27 @@
   background-color: blue;
 }
 
+.sidebar {
+  margin-left: 10px;
+  height: 110px;
+}
 
 .mini-grid {
-  margin-left: 50px;
+  border: 2px black solid;
+  padding: 0px;
   width: 80px;
   height: 80px;
   display: flex;
   flex-wrap: wrap;
-  background-color: yellow;
+  background-color: #d0f5a9;
+  box-shadow: 5px 5px 10px 5px grey;
 }
 
 .mini-grid div {
   height: 20px;
   width: 20px;
+}
+
+button:focus {
+  outline: none;
 }
