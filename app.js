@@ -36,12 +36,46 @@ const iTetromino = [
   [width, width + 1, width + 2, width + 3]
 ];
 
+  const liTetromino = [
+    [0, 1, width+1, width*2+1],
+    [2, width, width+1, width+2],
+    [0, width, width*2, width*2+1],
+    [0,1,2,width]
+  ];
+
+  const ziTetromino = [
+    [1,width,width+1,width*2],
+    [0,1,width+1, width + 2],
+    [1,width,width+1,width*2],
+    [0,1,width+1, width + 2]
+  ];
+
 const theTetrominoes = [
   lTetromino,
   zTetromino,
   tTetromino,
   oTetromino,
-  iTetromino
+  iTetromino,
+  liTetromino,
+  ziTetromino
+];
+
+const colors = ["orange", "red", "purple", "green", "blue", "brown", "turquoise"];
+
+//show up-next tetromino in mini-grid display
+const displaySquares = document.querySelectorAll(".mini-grid div");
+const displayWidth = 4;
+const displayIndex = 0;
+
+//the Tetrominos without rotations
+const upNextTetrominoes = [
+  [1, displayWidth + 1, displayWidth * 2 + 1, 2], //lTetromino
+  [0, displayWidth, displayWidth + 1, displayWidth * 2 + 1], //zTetromino
+  [1, displayWidth, displayWidth + 1, displayWidth + 2], //tTetromino
+  [0, 1, displayWidth, displayWidth + 1], //oTetromino
+  [1, displayWidth + 1, displayWidth * 2 + 1, displayWidth * 3 + 1], //iTetromino
+  [0, 1, displayWidth+1, displayWidth*2+1], // liTetromino
+  [1, displayWidth, displayWidth+1, displayWidth*2] // ziTetromino   
 ];
 
 //InitGame Options
@@ -67,8 +101,6 @@ let currentRotation = 0;
 //randomly select a Tetromino and its first rotation
 let random = Math.floor(Math.random() * theTetrominoes.length);
 let current = theTetrominoes[random][currentRotation];
-
-const colors = ["orange", "red", "purple", "green", "blue"];
 
 ///Activate functions at GameLoad
 activateGameButtons()
@@ -230,20 +262,6 @@ function rotate() {
   draw();
 }
 /////////
-
-//show up-next tetromino in mini-grid display
-const displaySquares = document.querySelectorAll(".mini-grid div");
-const displayWidth = 4;
-const displayIndex = 0;
-
-//the Tetrominos without rotations
-const upNextTetrominoes = [
-  [1, displayWidth + 1, displayWidth * 2 + 1, 2], //lTetromino
-  [0, displayWidth, displayWidth + 1, displayWidth * 2 + 1], //zTetromino
-  [1, displayWidth, displayWidth + 1, displayWidth + 2], //tTetromino
-  [0, 1, displayWidth, displayWidth + 1], //oTetromino
-  [1, displayWidth + 1, displayWidth * 2 + 1, displayWidth * 3 + 1] //iTetromino
-];
 
 //display the shape in the mini-grid display
 function displayShape() {
