@@ -1,7 +1,34 @@
+//Game Constanses amd important variables
+const squaresEmpty = Array.from(document.querySelectorAll(".grid div"));
+const miniSquaresEmpty = Array.from(document.querySelectorAll(".mini-grid div"));
+const scoreDisplay = document.querySelector("#score");
+let grid = document.querySelector(".grid");
+let miniGrid = document.querySelector(".mini-grid");
+let squares = Array.from(document.querySelectorAll(".grid div"));
+let miniSquares = Array.from(document.querySelectorAll(".mini-grid div"));
+let firstSquareInRow = document.querySelectorAll(".first-in-row");
+let startBtn = document.querySelector("#start-button");
 const width = 10;
+   //show up-next tetromino in mini-grid display
+const displaySquares = document.querySelectorAll(".mini-grid div");
+const displayWidth = 6;
+const displayIndex = 1;
+//////
+
+//InitGame Options
+let newStart = true;
+let startState = false;
+let muteState = false;
+let nextRandom = 0;
+let timerId;
+let score = 0;
+let currentPosition = 4;
+let currentRotation = 0;
+document.addEventListener("keyup", control);
+////
 
 //The Tetrominoes
-    /*
+     /* lTetronimo is the example *
                  0 1 2    0 1 2    0 1 2    0 1 2
                 |--------------------------------    
             0   |  X               X X          X
@@ -69,53 +96,27 @@ const theTetrominoes = [
 
 const colors = ["orange", "red", "purple", "green", "blue", "brown", "turquoise"];
 
-//show up-next tetromino in mini-grid display
-const displaySquares = document.querySelectorAll(".mini-grid div");
-const displayWidth = 4;
-const displayIndex = 0;
-
-//the Tetrominos without rotations
-const upNextTetrominoes = [
-  [1, displayWidth + 1, displayWidth * 2 + 1, 2], //lTetromino
-  [0, displayWidth, displayWidth + 1, displayWidth * 2 + 1], //zTetromino
-  [1, displayWidth, displayWidth + 1, displayWidth + 2], //tTetromino
-  [0, 1, displayWidth, displayWidth + 1], //oTetromino
-  [1, displayWidth + 1, displayWidth * 2 + 1, displayWidth * 3 + 1], //iTetromino
-  [0, 1, displayWidth+1, displayWidth*2+1], // liTetromino
-  [1, displayWidth, displayWidth+1, displayWidth*2] // ziTetromino   
-];
-
-//InitGame Options
-let newStart = true;
-let grid = document.querySelector(".grid");
-let miniGrid = document.querySelector(".mini-grid");
-let squares = Array.from(document.querySelectorAll(".grid div"));
-let miniSquares = Array.from(document.querySelectorAll(".mini-grid div"));
-const squaresEmpty = Array.from(document.querySelectorAll(".grid div"));
-const miniSquaresEmpty = Array.from(document.querySelectorAll(".mini-grid div"));
-let firstSquareInRow = document.querySelectorAll(".first-in-row");
-
-const scoreDisplay = document.querySelector("#score");
-const startBtn = document.querySelector("#start-button");
-
-let nextRandom = 0;
-let timerId;
-let score = 0;
-
-let currentPosition = 4;
-let currentRotation = 0;
-
 //randomly select a Tetromino and its first rotation
 let random = Math.floor(Math.random() * theTetrominoes.length);
 let current = theTetrominoes[random][currentRotation];
 
-///Activate functions at GameLoad
-activateGameButtons()
+
+//the Tetrominos without rotations
+const upNextTetrominoes = [
+  [2 * displayWidth + 1, 2 * displayWidth + 2, 3 * displayWidth + 1, 4 * displayWidth + 1], //lTetromino
+  [2 * displayWidth + 1, 3 * displayWidth + 1, 3 * displayWidth + 2, 4 * displayWidth + 2], //zTetromino
+  [2 * displayWidth + 1, 3 * displayWidth,  3 * displayWidth + 1,  3 * displayWidth + 2], //tTetromino
+  [2 * displayWidth + 1, 2 * displayWidth + 2, 3 * displayWidth + 1, 3 * displayWidth + 2], //oTetromino
+  [1 * displayWidth + 1, 2 * displayWidth + 1, 3 * displayWidth + 1, 4 * displayWidth + 1], //iTetromino
+  [2 * displayWidth + 1, 2 * displayWidth + 2, 3 * displayWidth + 2, 4 * displayWidth + 2], // liTetromino
+  [2 * displayWidth + 2, 3 * displayWidth + 1, 3 * displayWidth + 2, 4 * displayWidth + 1] // ziTetromino
+];
+////////////////////////////////////////////////////////////////
 
 
 /// FUNCTIONS SECTION
 
-function newGame() {
+function initGame() {
   console.log("New Game");
   scoreInit();
   squaresInit();
@@ -126,11 +127,14 @@ function newGame() {
   currentPosition = 4;
   currentRotation = 0;
   activateGameButtons()
+  startState = false;
+  startBtn.innerHTML = '▶ START';
+  deactivateGameButtons()
 }
 
 function scoreInit() {
   console.log("Score Init");
-  let score = 0;
+  score = 0;
   scoreDisplay.innerHTML = score;
 }
 
@@ -284,22 +288,6 @@ function displayShape() {
   });
 }
 
-//add functionality to the button
-startBtn.addEventListener("click", () => {
-  if (timerId) {
-    clearInterval(timerId);
-    timerId = null;
-    newStart = false;
-  } else {
-    draw();
-    timerId = setInterval(moveDown, 1000);
-    if (newStart === true) {
-      nextRandom = Math.floor(Math.random() * theTetrominoes.length);
-      displayShape();
-    }
-  }
-});
-
 //add score
 function addScore() {
   for (let i = 0; i < 229; i += width) {
@@ -356,6 +344,70 @@ function gameOver() {
   }
 }
 
+
+function startpauseSwitcher(){
+  if(startState === false){
+    startState = true;
+    console.log("STARTED")
+  } else {
+    startState = false;
+    console.log("PAUSED")
+  }
+  startpauseButtonSwitcher()
+}
+
+function startpauseButtonSwitcher(){
+  if(startState === false){
+    startBtn.innerHTML = '▶ START';
+  } else {
+    startBtn.innerHTML = '	⏸ PAUSE';
+  }
+}
+
+function muteSwitcher(){
+  if(muteState === false){
+    muteState = true;
+  } else {
+    muteState = false;
+  }
+  muteButtonSwitcher()
+}
+
+function muteButtonSwitcher(){
+  if(muteState === false){
+    muteButton.innerHTML = '🔇 MUTE';
+  } else {
+    muteButton.innerHTML = '🔈 MUTE';
+  }
+}
+
+
+//add functionality to the START button
+startBtn.addEventListener("click", () => {
+  if (timerId) {
+    clearInterval(timerId);
+    timerId = null;
+    newStart = false;
+    startpauseSwitcher()
+  } else {
+    draw();
+    timerId = setInterval(moveDown, 1000);
+    startpauseSwitcher()
+    activateGameButtons()
+    
+    if (newStart === true) {
+      nextRandom = Math.floor(Math.random() * theTetrominoes.length);
+      displayShape();
+     
+    }
+  }
+});
+
+//add functionality to the START button
+muteButton.addEventListener("click", () => {
+  muteSwitcher()
+});
+
 //assign functions to keyCodes
 function control(e) {
   if (e.keyCode === 37) {
@@ -372,12 +424,11 @@ function control(e) {
 
 function activateGameButtons(){
 console.log("GAME BUTTONS ACTIVATED")
-document.addEventListener("keyup", control);
 leftMove.addEventListener("click", moveLeft);
 rightMove.addEventListener("click", moveRight);
 downMove.addEventListener("click", moveDown);
 rotation.addEventListener("click", rotate);
-resetButton.addEventListener("click", newGame);
+resetButton.addEventListener("click", initGame);
 }
 
 function deactivateGameButtons(){
