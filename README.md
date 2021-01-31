@@ -1,6 +1,7 @@
 # Tetris-Basic
 This is a simple no nonsense version of Tetris that has no styling - made for the support of my Udemy Video.  Also viewable [here](https://youtu.be/w1JJfK09ujQ)
 
+[DEMO](https://bzozoo.github.io/Tetris-Basic/)
 
 In this course, you will learn how to set up a project from scratch using the Atom code editor and your command prompt tool, as well as gain a fundamental understanding of JavaScript by building your very own version of Tetris.
 
