@@ -121,7 +121,6 @@ function initGame() {
   currentRotation = 0;
   random = Math.floor(Math.random() * theTetrominoes.length);
   current = theTetrominoes[random][currentRotation];
-  activateGameButtons()
   startState = false;
   startBtn.innerHTML = '▶ START';
   deactivateGameButtons()
