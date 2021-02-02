@@ -7,12 +7,15 @@
     <title>Basic Tetris</title>
   </head>
   <body>
-
     
-  <audio id="myAudio">
+<audio id="myAudio">
     <source src="https://bzozoo.github.io/Tetris-Basic/tetrisTheme.mp3" type="audio/mpeg">
   Your browser does not support the audio element.
 </audio>
+
+<div id="gameOver" style="display: none;">
+  <div id="overScore">0000</div>
+</div>
 
 <div class="container">
   <div class="grid">
@@ -362,8 +365,7 @@
     <button class="gombBtn" id="rotation">🔄</button>
   </p>
 </div>
-
-
+    
     <script src="app.js" charset="utf-8"></script>
   </body>
 </html>
