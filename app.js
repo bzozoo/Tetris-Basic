@@ -2,6 +2,7 @@
 const squaresEmpty = Array.from(document.querySelectorAll(".grid div"));
 const miniSquaresEmpty = Array.from(document.querySelectorAll(".mini-grid div"));
 const scoreDisplay = document.querySelector("#score");
+const gameOverDiv = document.querySelector("#gameOver");
 let grid = document.querySelector(".grid");
 let miniGrid = document.querySelector(".mini-grid");
 let squares = Array.from(document.querySelectorAll(".grid div")); // squares[x] = grid.children[x]
@@ -115,6 +116,7 @@ const upNextTetrominoes = [
 
 function initGame() {
   console.log("Init Game");
+  gameOverDiv.style.display = "none";
   scoreInit();
   squaresInit();
   clearInterval(timerId);
@@ -227,9 +229,11 @@ function tryFreeze() {
     if(lockCheck() === true) {
       current.forEach((index) => squares[currentPosition + index].classList.add("taken"));
  
-    dropNewTetromino()
+    
     addScore();
+    
     gameOver();
+    dropNewTetromino()
     
 
   } else {
@@ -372,6 +376,8 @@ function gameOver() {
 
     document.removeEventListener("keyup", control);
     deactivateGameButtons()
+    overScore.innerHTML = "SCORE : " + score;
+    gameOverDiv.style.display = "block";
   }
 }
 
