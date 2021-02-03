@@ -3,20 +3,43 @@ const squaresEmpty = Array.from(document.querySelectorAll(".grid div"));
 const miniSquaresEmpty = Array.from(document.querySelectorAll(".mini-grid div"));
 const scoreDisplay = document.querySelector("#score");
 const gameOverDiv = document.querySelector("#gameOver");
+let rewardPicDiv = document.querySelector("#rewardPic");
 let grid = document.querySelector(".grid");
 let miniGrid = document.querySelector(".mini-grid");
 let squares = Array.from(document.querySelectorAll(".grid div")); // squares[x] = grid.children[x]
 let miniSquares = Array.from(document.querySelectorAll(".mini-grid div"));
 let firstSquareInRow = document.querySelectorAll(".first-in-row");
 let startBtn = document.querySelector("#start-button");
+let invertCheckBox = document.querySelector("#invert");
 const music = document.getElementById("myAudio"); 
-const width = 10;
-
 //show up-next tetromino in mini-grid display
 const displaySquares = document.querySelectorAll(".mini-grid div");
-const displayWidth = 6;
-const displayIndex = 1;
 //////
+
+//ExtraPics
+let rewardExtraPics = [
+    "https://redbust.com/stuff/nude-girls-on-bikes/girls-nude-on-bikes-02-800x1333.jpg",
+    "https://redbust.com/stuff/nude-girls-on-bikes/girls-nude-on-bikes-22-800x1200.jpg",
+    "https://redbust.com/stuff/nude-girls-on-bikes/girls-nude-on-bikes-24.jpg",
+    "https://eurobabesdb.com/wp-content/uploads/2014/05/naked-girl-with-bicycle-05.jpg",
+    "https://sweetgirl.org/files/sets/2015/06-02-girls-on-bicyclesi-love-to-ride-naked/girls%20on%20bikes_002.jpg",
+    "https://cdncontent.xxxwaffle.com/content/2/688/2688347_809c408.jpg",
+    "https://cdn.xpics.me/0/593/297374/7.jpg",
+    "https://redbust.com/wp-content/uploads/cyclist_girl/cyclist_girl_09.jpg",
+    "https://meit.info/img/ass-nudes-on-bicycles-2.jpg",
+    "https://cdni.pornpics.com/1280/1/181/14154615/14154615_004_19fd.jpg",
+    "https://redbust.com/stuff/nude-girls-on-bikes/girls-nude-on-bikes-11.jpg",
+    "https://i.imgur.com/KeU7Uex.jpg",
+    "https://i.imgur.com/N67Ht4A.jpg",
+    "https://i.imgur.com/IYOefKG.jpg",
+    "https://i.imgur.com/5mKnJYe.jpg",
+    "https://i.imgur.com/DFoGEyV.jpg",
+    "https://i.imgur.com/vJlYTRZ.jpg",
+    "https://i.imgur.com/45kUWP6.jpg",
+    "https://i.imgur.com/dg2Zxvd.jpg",
+    "https://i.imgur.com/3lew6Bz.jpg",
+    "https://i.imgur.com/bcQUUNq.jpg"
+];
 
 //InitGame Options
 let newStart = true;
@@ -30,7 +53,14 @@ let currentPosition = 4;
 let currentRotation = 0;
 let nextRotation = currentRotation + 1;
 let musicInterval;
+let  transformGrid = false;
+const width = 10;
+const displayWidth = 6;
+const displayIndex = 1;
+let rewardExtra = true;
+rewardPicDivSetBackground()
 ////
+
 
 //The Tetrominoes
      /* lTetronimo is the example *
@@ -70,9 +100,9 @@ const oTetromino = [
 
 const iTetromino = [
   [1, width + 1, width * 2 + 1, width * 3 + 1],
-  [width, width + 1, width + 2, width + 3],
+  [width - 1, width, width + 1, width + 2],
   [1, width + 1, width * 2 + 1, width * 3 + 1],
-  [width, width + 1, width + 2, width + 3]
+  [width - 1, width, width + 1, width + 2]
 ];
 
   const liTetromino = [
@@ -113,7 +143,6 @@ const upNextTetrominoes = [
 
 
 /// FUNCTIONS SECTION
-
 function initGame() {
   console.log("Init Game");
   gameOverDiv.style.display = "none";
@@ -130,6 +159,21 @@ function initGame() {
   startState = false;
   startBtn.innerHTML = '▶ START';
   deactivateGameButtons()
+  rewardPicDivSetHeight(0)
+  rewardPicDivSetBackground()
+}
+
+function rewardPicDivSetHeight(value){
+  rewardPicDiv.style.height = value + "%"
+}
+
+function rewardPicDivSetBackground(){
+  randomReward = Math.floor(Math.random() * rewardExtraPics.length);
+  rewardPicDiv.style.backgroundImage = 'url(' + rewardExtraPics[randomReward] + ')'
+}
+
+function addRewardPic() {
+  rewardPicDivSetHeight(score / 2)
 }
 
 function scoreInit() {
@@ -231,7 +275,9 @@ function tryFreeze() {
  
     
     addScore();
-    
+    if(rewardExtra === true){
+    addRewardPic()
+    }
     gameOver();
     dropNewTetromino()
     
@@ -458,6 +504,7 @@ function checkCurrent(){
       
 }
 
+
 function checkNextRotationCollision(){
    currentRotation === 3 ? nextRotation = 0 : nextRotation = currentRotation + 1;
    nextRotatedCurrent = theTetrominoes[random][nextRotation];
@@ -471,8 +518,17 @@ function checkNextRotationCollision(){
     }
   }
   
-
-
+function transformTheGrid() {
+  if(transformGrid === false){
+    transformGrid = true;
+    grid.classList.add("transformed")
+    grid.style.transform = "rotate(180deg)"
+  } else {
+    transformGrid = false;
+    grid.classList.remove("transformed");
+    grid.style.transform = ""
+  }
+}
 
 //add functionality to the START button
 startBtn.addEventListener("click", () => {
@@ -530,7 +586,8 @@ function deactivateGameButtons(){
     rightMove.removeEventListener("click", moveRight);
     downMove.removeEventListener("click", tryFreeze);
     rotation.removeEventListener("click", rotate);
-    
 }
+
+invertCheckBox.addEventListener("change", transformTheGrid);
 
 /// FUNCTIONS SECTION ENDE
