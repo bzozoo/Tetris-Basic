@@ -10,19 +10,43 @@ body {
   -khtml-user-select: none; /* Konqueror HTML */
   -moz-user-select: none; /* Old versions of Firefox */
   -ms-user-select: none; /* Internet Explorer/Edge */
-  user-select: none; /* Non-prefixed version, currently
+  user-select: none;*/ /* Non-prefixed version, currently
                                   supported by Chrome, Edge, Opera and Firefox */
 }
 
 #gameOver {
   background: url(https://bzozoo.github.io/Tetris-Basic/images/gameover.jpg);
   min-width: 200px;
-  width: 251px;
+  width: 250px;
   height: 526px;
   margin-top: 2px;
   margin-left: 7px;
   position: absolute;
+  z-index: 1;
   /*display: none;*/
+}
+
+#rewardContainer {
+  /* background: green; */
+  min-width: 200px;
+  width: 250px;
+  height: 526px;
+  margin-top: 2px;
+  margin-left: 7px;
+  position: absolute;
+  z-index: 1;
+  /*display: none;*/
+}
+
+#rewardPic {
+  background: yellow;
+  opacity: 0.6;
+  height: 0%;
+  max-height: 100%;
+  width: 100%;
+  background-repeat: no-repeat;
+  background-size: 100% 525px;
+  z-index: 1;
 }
 
 #score {
@@ -106,6 +130,8 @@ button:active{
 }
 
 .grid {
+  /* transform: rotate(180deg);
+  */
   border: 2px black solid;
   min-width: 200px;
   width: 250px;
@@ -114,6 +140,10 @@ button:active{
   flex-wrap: wrap;
   background-color: #d0f5a9;
   box-shadow: 5px 5px 10px 5px grey;
+}
+
+.transformed {
+  box-shadow: -5px -5px 10px 5px grey;
 }
 
 .grid div {
