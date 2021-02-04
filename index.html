@@ -7,8 +7,10 @@
     <title>Basic Tetris</title>
   </head>
   <body>
+   
     
-<audio id="myAudio">
+    
+    <audio id="myAudio">
     <source src="https://bzozoo.github.io/Tetris-Basic/tetrisTheme.mp3" type="audio/mpeg">
   Your browser does not support the audio element.
 </audio>
@@ -23,7 +25,15 @@
   <div id="overScore">0000</div>
 </div>
 
+
+
+
 <div class="container">
+  
+  <div class="grid-bg">
+  </div>
+  
+  
   <div class="grid">
     <div class="hidden first-in-row"></div>
     <div class="hidden"></div>
@@ -289,13 +299,15 @@
     <div class="taken"></div>
     <div class="taken"></div>
   </div>
+  
+
 
   <div class="sidebar">
 
     <div id="scoreBox">
       <p>
         <strong>
-          SCORE:
+          SCORE
         </strong>
       </p>
       <p id="score">0</p>
@@ -359,6 +371,9 @@
       </p>
       <p>
         <input type="checkbox" name="invert" id="invert"> <label for="invert">INVERT ¿</label></input>
+      </p>
+        <p>
+        <input type="checkbox" name="reward" id="reward" checked> <label for="reward">REWARD</label></input>
       </p>
 
     </div>
