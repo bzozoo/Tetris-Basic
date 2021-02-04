@@ -16,7 +16,7 @@ body {
 }
 
 #gameOver {
-  background: url(https://bzozoo.github.io/Tetris-Basic/images/gameover.jpg);
+  background: url(/images/gameover.jpg);
   min-width: 200px;
   width: 250px;
   height: 526px;
