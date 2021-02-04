@@ -1,4 +1,5 @@
 body {
+  font-family: sans-serif;
   margin: 5px;
   background-color: lightgray;
   height: 100%;
@@ -23,31 +24,31 @@ body {
   margin-left: 7px;
   position: absolute;
   z-index: 1;
+  font-family: sans-serif;
   /*display: none;*/
 }
 
 #rewardContainer {
   /* background: green; */
   min-width: 200px;
-  width: 250px;
+  width: 251px;
   height: 526px;
   margin-top: 2px;
   margin-left: 7px;
   position: absolute;
-  z-index: 1;
   /*display: none;*/
+  z-index: -1;
 }
 
 #rewardPic {
   background: yellow;
-  opacity: 0.6;
+  /* opacity: 0.6; */
   height: 0%;
   max-height: 100%;
   width: 100%;
   background-repeat: no-repeat;
-  background-size: 100% 525px;
-  z-index: 1;
-}
+  background-size: 100% 526px;
+ }
 
 #score {
   font-size: 30px;
@@ -55,9 +56,11 @@ body {
   text-align: center;
   margin-top: 2px;
   margin-bottom: 2px;
+  font-family: sans-serif;
 }
 
 #scoreBox {
+  font-family: sans-serif;
   margin-bottom: 15px;
   border: 2px black solid;
   padding: 0px;
@@ -108,9 +111,10 @@ body {
 }
 
 .actionBtn {
+  font-family: sans-serif;
   background-color: yellow;
   padding: 5px;
-  border-radius: 10%;
+  border-radius: 8%;
   box-shadow: 5px 5px 10px 5px grey;
 }
 
@@ -138,8 +142,20 @@ button:active{
   height: 525px;
   display: flex;
   flex-wrap: wrap;
+  /* background-color: #d0f5a9;*/
+  /* box-shadow: 5px 5px 10px 5px grey; */
+}
+
+.grid-bg {
+  border: 2px black solid;
+  min-width: 200px;
+  width: 250px;
+  height: 524px;
+  flex-wrap: wrap;
   background-color: #d0f5a9;
   box-shadow: 5px 5px 10px 5px grey;
+  position: absolute;
+  z-index: -2;
 }
 
 .transformed {
@@ -153,6 +169,7 @@ button:active{
 
 .tetromino {
   background-color: blue;
+  opacity: 0.6;
 }
 
 .sidebar {
@@ -161,6 +178,7 @@ button:active{
 }
 
 .mini-grid {
+  font-family: sans-serif;
   border: 2px black solid;
   padding: 0px;
   width: 115px;
