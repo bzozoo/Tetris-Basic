@@ -11,6 +11,7 @@ let miniSquares = Array.from(document.querySelectorAll(".mini-grid div"));
 let firstSquareInRow = document.querySelectorAll(".first-in-row");
 let startBtn = document.querySelector("#start-button");
 let invertCheckBox = document.querySelector("#invert");
+let rewardCheckBox = document.querySelector("#reward");
 const music = document.getElementById("myAudio"); 
 //show up-next tetromino in mini-grid display
 const displaySquares = document.querySelectorAll(".mini-grid div");
@@ -24,7 +25,7 @@ let rewardExtraPics = [
     "https://eurobabesdb.com/wp-content/uploads/2014/05/naked-girl-with-bicycle-05.jpg",
     "https://sweetgirl.org/files/sets/2015/06-02-girls-on-bicyclesi-love-to-ride-naked/girls%20on%20bikes_002.jpg",
     "https://cdncontent.xxxwaffle.com/content/2/688/2688347_809c408.jpg",
-    "https://cdn.xpics.me/0/593/297374/7.jpg",
+    "https://i.imgur.com/PfvbIwi.jpg",
     "https://redbust.com/wp-content/uploads/cyclist_girl/cyclist_girl_09.jpg",
     "https://meit.info/img/ass-nudes-on-bicycles-2.jpg",
     "https://cdni.pornpics.com/1280/1/181/14154615/14154615_004_19fd.jpg",
@@ -43,6 +44,7 @@ let rewardExtraPics = [
 
 //InitGame Options
 let newStart = true;
+let gameOvered = false;
 let tetrominoDropable = true;
 let startState = false;
 let muteState = false;
@@ -57,7 +59,19 @@ let  transformGrid = false;
 const width = 10;
 const displayWidth = 6;
 const displayIndex = 1;
-let rewardExtra = true;
+let rewardExtra;
+if (localStorage.getItem("storedReward") === null) {
+  rewardExtra = true;
+} else {
+  rewardExtra = JSON.parse(localStorage.getItem('storedReward'));
+  console.log("REWARD RESTORED FROM STORAGE");
+}
+
+if(rewardExtra === false){
+  rewardCheckBox.checked = false;
+  console.log("REWARD FALSE")
+}
+
 rewardPicDivSetBackground()
 ////
 
@@ -145,6 +159,7 @@ const upNextTetrominoes = [
 /// FUNCTIONS SECTION
 function initGame() {
   console.log("Init Game");
+  gameOvered = false;
   gameOverDiv.style.display = "none";
   scoreInit();
   squaresInit();
@@ -173,7 +188,21 @@ function rewardPicDivSetBackground(){
 }
 
 function addRewardPic() {
-  rewardPicDivSetHeight(score / 2)
+  rewardPicDivSetHeight(score / 3)
+}
+
+function rewardFunctionSwitch(){
+  if(rewardExtra === true){
+    rewardExtra = false;
+    localStorage.setItem("storedReward", rewardExtra); 
+    rewardPicDivSetHeight(0)
+  } else {
+    rewardExtra = true;
+    localStorage.setItem("storedReward", rewardExtra);
+    addRewardPic()
+  }
+  
+  console.log("ACTUAL REWARD: " + rewardExtra + " - " + localStorage.getItem("storedReward"));
 }
 
 function scoreInit() {
@@ -261,7 +290,7 @@ function lockCheck(){
   if(current.some((index) =>
       squares[currentPosition + index + width].classList.contains("taken"))) {
      
-      console.log("YES LOCKABLE")
+      console.log("LockCheck: Locked!")
       return true;
   }  else {
      return false;
@@ -354,7 +383,7 @@ function rotationAllowed(){
   if(checkNextRotationCollision() === true){
     return false; 
   } else {
-  return true;
+    return true;
     }
 }
 
@@ -409,21 +438,23 @@ function addScore() {
 }
 
 function createNewGridLine(cell, key) {
-  console.log(cell, key)
+  //console.log(cell, key)
   grid.appendChild(cell);
 }
 
 //game over
 function gameOver() {
+  gameOvered = true;
   //if (current.some((index) => squares[currentPosition + index].classList.contains("taken"))) 
   if(squares[15].classList.contains("taken") || squares[15].classList.contains("taken") || squares[14].classList.contains("taken")) {
-    scoreDisplay.innerHTML = "end";
+    scoreDisplay.innerHTML = "End";
     clearInterval(timerId);
 
     document.removeEventListener("keyup", control);
     deactivateGameButtons()
     overScore.innerHTML = "SCORE : " + score;
     gameOverDiv.style.display = "block";
+    console.log("GAME OVERED");
   }
 }
 
@@ -508,9 +539,10 @@ function checkCurrent(){
 function checkNextRotationCollision(){
    currentRotation === 3 ? nextRotation = 0 : nextRotation = currentRotation + 1;
    nextRotatedCurrent = theTetrominoes[random][nextRotation];
-   nextRotatedCurrent.forEach((index) => { console.log(squares[currentPosition + index]) });
-   console.log(nextRotatedCurrent.some((index) =>
+   // nextRotatedCurrent.forEach((index) => { console.log(squares[currentPosition + index]) });
+   console.log("ROTATION COLLISION : " + nextRotatedCurrent.some((index) =>
       squares[currentPosition + index].classList.contains("taken")))
+  
   if(nextRotatedCurrent.some((index) =>
       squares[currentPosition + index].classList.contains("taken"))){
     return true; } else {
@@ -521,16 +553,14 @@ function checkNextRotationCollision(){
 function transformTheGrid() {
   if(transformGrid === false){
     transformGrid = true;
-    grid.classList.add("transformed")
-    grid.style.transform = "rotate(180deg)"
+     grid.style.transform = "rotate(180deg)"
   } else {
     transformGrid = false;
-    grid.classList.remove("transformed");
     grid.style.transform = ""
   }
 }
 
-//add functionality to the START button
+//add functionality to the START/PAUSE button
 startBtn.addEventListener("click", () => {
   if (timerId) {
     clearInterval(timerId);
@@ -589,5 +619,6 @@ function deactivateGameButtons(){
 }
 
 invertCheckBox.addEventListener("change", transformTheGrid);
+rewardCheckBox.addEventListener("change", rewardFunctionSwitch);
 
 /// FUNCTIONS SECTION ENDE
