@@ -16,7 +16,7 @@ body {
 }
 
 #gameOver {
-  background: url(/images/gameover.jpg);
+  background: url(./images/gameover.jpg);
   min-width: 200px;
   width: 250px;
   height: 526px;
